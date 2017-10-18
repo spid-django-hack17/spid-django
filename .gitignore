@@ -1,0 +1,13 @@
+*.pyc
+*.pyo
+*~
+*.db
+*.sqlite3
+.venv/
+venv/
+doc/_build/
+.idea/
+__pychache__/
+tmp/
+demo/demo/certs/*.crt
+demo/demo/certs/*.key

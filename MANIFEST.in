@@ -1,0 +1,3 @@
+include LICENSE CHANGELOG.md README.md
+recursive-include spid_django/templates/spid_django *.html
+global-exclude *.pyc[co]
