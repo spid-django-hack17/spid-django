@@ -1,18 +1,19 @@
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import (HttpResponse, HttpResponseRedirect,
                          HttpResponseServerError)
 from django.shortcuts import render
 
-from onelogin.saml2.auth import OneLogin_Saml2_Auth
 from onelogin.saml2.settings import OneLogin_Saml2_Settings
 from onelogin.saml2.utils import OneLogin_Saml2_Utils
+from .saml import SpidSaml2Auth
+from onelogin.saml2.auth import OneLogin_Saml2_Auth
 
 from .apps import SpidConfig
 
 
 def init_saml_auth(request):
-    auth = OneLogin_Saml2_Auth(request, old_settings=SpidConfig.saml_settings)
+    auth = SpidSaml2Auth(request, old_settings=SpidConfig.saml_settings)
+    # auth = OneLogin_Saml2_Auth(request, old_settings=SpidConfig.saml_settings)
     return auth
 
 
@@ -34,6 +35,9 @@ def get_request_data(request):
 def index(request):
     request_data = get_request_data(request)
     auth = init_saml_auth(request_data)
+    print("AUTH: ", auth)
+    import pdb
+    pdb.set_trace()
     errors = []
     not_auth_warn = False
     success_slo = False

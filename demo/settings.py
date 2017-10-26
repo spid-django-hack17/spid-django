@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -122,11 +121,10 @@ STATIC_URL = '/static/'
 
 
 #
-# SPID Configurations
-SPID_SP_DOMAIN = "%s/spid" % socket.gethostname()
+# SPID Configuration
+SPID_SP_DOMAIN = "localhost:8000/spid"
+SPID_SERVICE_NAME = "apptest"
+SPID_SERVICE_DESCRIPTION = "Demo SP test app"
+SPID_REQUESTED_ATTRIBUTES = ['name', 'familyName', 'fiscalNumber', 'spidCode']
 SPID_SP_PUBLIC_CERT = os.path.join(BASE_DIR, 'demo/certs/demo.crt')
 SPID_SP_PRIVATE_KEY = os.path.join(BASE_DIR, 'demo/certs/demo.key')
-
-# Uncomment if you want to use a different certificate for signing metadata
-# SPID_SP_METADATA_PUBLIC_CERT = os.path.join(BASE_DIR, 'demo/certs/metadata.crt')
-# SPID_SP_METADATA_PRIVATE_KEY = os.path.join(BASE_DIR, 'demo/certs/metadata.key')
