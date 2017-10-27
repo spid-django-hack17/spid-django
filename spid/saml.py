@@ -51,6 +51,9 @@ class SpidSaml2Auth(OneLogin_Saml2_Auth):
         :param request_id: The ID of the LogoutRequest sent by this SP to the IdP
         :type request_id: string
 
+        :param delete_session_cb: The delete local session callback.
+        :type delete_session_cb: Callable[]
+
         :returns: Redirection url
         """
         self.__errors = []

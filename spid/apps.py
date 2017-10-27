@@ -1,8 +1,25 @@
+from xml.etree import ElementTree as et
+
 from django.conf import settings
 from django.apps import AppConfig
 
+SAML_METADATA_NAMESPACE = "urn:oasis:names:tc:SAML:2.0:metadata"
+XML_SIGNATURE_NAMESPACE = "http://www.w3.org/2000/09/xmldsig#"
 
 SPID_NAME_FORMAT = "urn:oasis:names:tc:SAML:2.0:attrname-format:basic"
+SAML_BINDING_REDIRECT_URN = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+
+
+SPID_IDENTITY_PROVIDERS = [
+    ('arubaid', 'Aruba ID'),
+    ('infocertid', 'Infocert ID'),
+    ('namirialid', 'Namirial ID'),
+    ('posteid', 'Poste ID'),
+    ('sielteid', 'Sielte ID'),
+    ('spiditalia', 'SPIDItalia Register.it'),
+    ('timid', 'Tim ID')
+]
+
 
 SPID_SAML_SETTINGS = {
     "strict": True,
@@ -55,8 +72,53 @@ SPID_SAML_SETTINGS = {
 }
 
 
+def get_idp_config(id, name=None):
+    idp_metadata = et.parse("spid/spid-idp-metadata/spid-idp-%s.xml" % id).getroot()
+    sso_path = './/{%s}SingleSignOnService[@Binding="%s"]' % \
+               (SAML_METADATA_NAMESPACE, SAML_BINDING_REDIRECT_URN)
+    slo_path = './/{%s}SingleLogoutService[@Binding="%s"]' % \
+               (SAML_METADATA_NAMESPACE, SAML_BINDING_REDIRECT_URN)
+
+    try:
+        sso_location = idp_metadata.find(sso_path).attrib['Location']
+    except (KeyError, AttributeError) as err:
+        raise ValueError("Missing metadata SingleSignOnService for %r: %r" % (id, err))
+
+    try:
+        slo_location = idp_metadata.find(slo_path).attrib['Location']
+    except (KeyError, AttributeError) as err:
+        raise ValueError("Missing metadata SingleLogoutService for %r: %r" % (id, err))
+
+    return {
+        'name': name,
+        'idp': {
+            "entityId": idp_metadata.get("entityID"),
+            "singleSignOnService": {
+                "url": sso_location,
+                "binding": SAML_BINDING_REDIRECT_URN
+            },
+            "singleLogoutService": {
+                "url": slo_location,
+                "binding": SAML_BINDING_REDIRECT_URN
+            },
+            "x509cert": idp_metadata.find(".//{%s}X509Certificate" % XML_SIGNATURE_NAMESPACE).text
+        }
+    }
+
+
 class SpidConfig(AppConfig):
     name = 'spid'
     verbose_name = "SPID Authentication"
 
-    saml_settings = dict(SPID_SAML_SETTINGS)
+    identity_providers = {
+        id: get_idp_config(id, name) for id, name in SPID_IDENTITY_PROVIDERS
+    }
+
+    @staticmethod
+    def get_saml_settings(idp_id=None):
+        if idp_id is None:
+            return SPID_SAML_SETTINGS
+        else:
+            saml_settings = dict(SPID_SAML_SETTINGS)
+            saml_settings.update({'idp': SpidConfig.identity_providers[idp_id]['idp']})
+            return saml_settings

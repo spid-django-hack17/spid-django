@@ -12,7 +12,8 @@ from .apps import SpidConfig
 
 
 def init_saml_auth(request):
-    auth = SpidSaml2Auth(request, old_settings=SpidConfig.saml_settings)
+    print(request['get_data'])
+    auth = SpidSaml2Auth(request, old_settings=SpidConfig.get_saml_settings(request['get_data'].get('idp')))
     # auth = OneLogin_Saml2_Auth(request, old_settings=SpidConfig.saml_settings)
     return auth
 
@@ -29,6 +30,7 @@ def get_request_data(request):
         # 'lowercase_urlencoding': True,
         'post_data': request.POST.copy()
     }
+    print("RESULT: ", result)
     return result
 
 
@@ -36,8 +38,8 @@ def index(request):
     request_data = get_request_data(request)
     auth = init_saml_auth(request_data)
     print("AUTH: ", auth)
-    import pdb
-    pdb.set_trace()
+    #import pdb
+    #pdb.set_trace()
     errors = []
     not_auth_warn = False
     success_slo = False
@@ -111,7 +113,7 @@ def attrs(request):
 
 
 def metadata(request):
-    saml_settings = OneLogin_Saml2_Settings(settings=SpidConfig.saml_settings, sp_validation_only=True)
+    saml_settings = OneLogin_Saml2_Settings(settings=SpidConfig.get_saml_settings(), sp_validation_only=True)
     metadata = saml_settings.get_sp_metadata()
     errors = saml_settings.validate_metadata(metadata)
 

@@ -1,0 +1,14 @@
+{% load static %}
+<a href="#" class="italia-it-button italia-it-button-size-{{ spid_button_size_short }} button-spid" spid-idp-button="#spid-idp-button-{{ spid_button_size }}-get" aria-haspopup="true" aria-expanded="false">
+    <span class="italia-it-button-icon"><img src="{% static "spid/img/spid-ico-circle-bb.svg" %}" onerror="this.src='{% static "spid/img/spid-ico-circle-bb.png" %}'; this.onerror=null;" alt="" /></span>
+    <span class="italia-it-button-text">Entra con SPID</span>
+</a>
+<div id="spid-idp-button-{{ spid_button_size }}-get" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
+    <ul id="spid-idp-list-{{ spid_button_size }}-root-get" class="spid-idp-button-menu" aria-labelledby="spid-idp">
+        {% for idp in spid_idp_list %}<li class="spid-idp-button-link" data-idp="{{ idp.id }}">
+            <a href="{% url 'spid:index' %}?sso&idp={{ idp.id }}"><span class="spid-sr-only">{{ idp.name }}</span><img src="/static/spid/img/spid-idp-{{ idp.id }}.svg" onerror="this.src='img/spid-idp-{{ idp.id }}.png'; this.onerror=null;" alt="{{ idp.name }}" /></a>
+        </li>
+        {%  endfor %}
+        {% include "spid/spid_helpers.html" %}
+    </ul>
+</div>
