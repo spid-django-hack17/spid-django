@@ -1,5 +1,5 @@
-{% extends "spid/base.html" %}
-{%  load spid_tags %}
+{% extends "base.html" %}
+{% load spid_tags %}
 
 {% block content %}
 
@@ -42,14 +42,11 @@
   {% else %}
     <div class="alert alert-danger" role="alert">You don't have any attributes</div>
   {% endif %}
-  <a href="{% url 'spid:index' %}?slo" class="btn btn-danger">Logout</a>
+  <a href="{% url 'index' %}?slo" class="btn btn-danger">Logout</a>
 {% else %}
     <!-- Login sso -->
-    <a href="{% url 'spid:index' %}?sso" class="btn btn-primary">Login</a> <a href="{% url 'spid:index' %}?sso2" class="btn btn-info">Login and access to attrs page</a>
-    <hr>
-    {% show_idp_list 'small' %} {% show_idp_list 'medium' %}
-    {% show_idp_list 'large' %}
-    {% show_idp_list 'xlarge' %}
+    {% spid_button 'small' %} {% spid_button 'medium' %}
+    {% spid_button 'large' %} {% spid_button 'xlarge' %}
 {% endif %}
 
 {% endblock %}
