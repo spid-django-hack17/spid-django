@@ -36,14 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'spid',
+    'spid'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -122,9 +122,9 @@ STATIC_URL = '/static/'
 
 #
 # SPID Configuration
-SPID_SP_DOMAIN = "localhost:8000/spid"
+SPID_SP_DOMAIN = "localhost:8000"
 SPID_SERVICE_NAME = "apptest"
 SPID_SERVICE_DESCRIPTION = "Demo SP test app"
-SPID_REQUESTED_ATTRIBUTES = ['name', 'familyName', 'fiscalNumber', 'spidCode']
+SPID_REQUESTED_ATTRIBUTES = ['name', 'familyName', 'email']
 SPID_SP_PUBLIC_CERT = os.path.join(BASE_DIR, 'demo/certs/demo.crt')
 SPID_SP_PRIVATE_KEY = os.path.join(BASE_DIR, 'demo/certs/demo.key')

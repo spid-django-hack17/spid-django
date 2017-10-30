@@ -2,6 +2,7 @@
 {% load spid_tags %}
 
 {% block content %}
+{% csrf_token %}
 
 {% if errors %}
   <div class="alert alert-danger" role="alert">
@@ -44,9 +45,12 @@
   {% endif %}
   <a href="{% url 'index' %}?slo" class="btn btn-danger">Logout</a>
 {% else %}
-    <!-- Login sso -->
-    {% spid_button 'small' %} {% spid_button 'medium' %}
-    {% spid_button 'large' %} {% spid_button 'xlarge' %}
+  <a href="{% url 'index' %}?sso" class="btn btn-primary">Login</a>
+  <a href="{% url 'index' %}?sso2" class="btn btn-info">Login and access to attrs page</a>
+  <hr>
+  <!-- Login sso -->
+  {% spid_button 'small' %} {% spid_button 'medium' %}
+  {% spid_button 'large' %} {% spid_button 'xlarge' %}
 {% endif %}
 
 {% endblock %}

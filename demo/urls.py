@@ -26,5 +26,5 @@ urlpatterns = [
     url(r'^attrs/$', views.attrs, name='attrs'),
 
     # SPID urls
-    url(r'^spid/', include('spid.urls', namespace='spid'))
+    url(r'^', include('spid.urls', namespace='spid'))
 ]

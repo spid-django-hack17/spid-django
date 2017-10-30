@@ -26,13 +26,13 @@ Requisiti
 Il plugin è basato sulla libreria `python3-saml <https://github.com/onelogin/python3-saml>`_ di OneLogin.
 Questa libreria ha una serie di dipendenze, da installare prima dell'installazione del plugin per SPID.
 
-Su Linux Debian il comando per installare le dipendenze sarebbe:
+Su Linux Debian il comando per installare le dipendenze è:
 
 .. code-block:: bash
 
   apt-get install libxml2-dev libxmlsec1-dev libxmlsec1-openssl
 
-Su una CentOS Linux i prerequisiti vengono installati con il comando:
+su una CentOS Linux i prerequisiti vengono invece installati con il comando:
 
 .. code-block:: bash
 

@@ -3,15 +3,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from onelogin.saml2.utils import OneLogin_Saml2_Utils
+from onelogin.saml2.authn_request import OneLogin_Saml2_Authn_Request
 from spid.views import get_request_data, init_saml_auth
 
 
 def index(request):
+    print("Index!!: ", request.GET)
     request_data = get_request_data(request)
     auth = init_saml_auth(request_data)
-    print("AUTH: ", auth)
-    #import pdb
-    #pdb.set_trace()
     errors = []
     not_auth_warn = False
     success_slo = False
@@ -19,6 +18,10 @@ def index(request):
     paint_logout = False
 
     if 'sso' in request.GET:
+        import pprint
+        pprint.pprint(auth.get_settings().get_sp_data())
+        print(OneLogin_Saml2_Authn_Request(auth.get_settings()).get_xml())
+        print(auth.login())
         return HttpResponseRedirect(auth.login())
 
     elif 'sso2' in request.GET:

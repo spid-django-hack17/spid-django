@@ -59,6 +59,7 @@ class SpidSaml2Auth(OneLogin_Saml2_Auth):
         self.__errors = []
         self.__error_reason = None
 
+        request_data = self._OneLogin_Saml2_Auth__request_data
         post_data = 'post_data' in self.__request_data and self.__request_data['post_data']
         get_data = 'get_data' in self.__request_data and self.__request_data['get_data']
         method = 'redirect'

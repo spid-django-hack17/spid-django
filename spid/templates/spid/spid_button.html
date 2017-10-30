@@ -1,7 +1,7 @@
 {% load static %}
 
 {% if method == 'post' %}
-<form name="spid_idp_access" action="#" method="post">
+<form name="spid_idp_access" action="#" method="post">{% csrf_token %}
     {% for key, value in post_data.items %}
     <input type="hidden" name="{{ key }}" value="{{ value }}" />
     {% endfor %}
