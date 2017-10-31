@@ -1,9 +1,15 @@
 *.pyc
 *.pyo
 *~
+*.sqlite3
 .idea/
 .venv/
 venv/
 .DS_Store
 saml/.DS_Store
 __pycache__/
+doc/_build/
+*.egg-info/
+dist/
+build/
+tmp/
